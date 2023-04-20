@@ -1,0 +1,63 @@
+{% extends "bases/base.html" %}
+
+{% block titulo_pagina %}
+{{title}}
+{% endblock %}
+
+{% block contenido %}
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>
+            id
+        </th>
+        <th>
+            nombre
+        </th>
+        <th>
+            Cliente
+        </th>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Número de Documento
+        </th>
+        <th>
+            Total
+        </th>
+<!--        <th>-->
+<!--            Acciones-->
+<!--        </th>-->
+    </tr>
+    </thead>
+    <tbody>
+    {% if moves_ids %}
+        {% for move in moves_ids %}
+        <tr>
+            <td>
+                {{move.id}}
+            </td>
+            <td>
+                {{move.name}}
+            </td>
+            <td>
+                {{move.cliente}}
+            </td>
+            <td>
+                {{move.date}}
+            </td>
+            <td>
+                {{move.numero_documento}}
+            </td>
+            <td>
+                {{move.total}}
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+    <h1>No hay registros que listar</h1>
+    {% endif %}
+    </tbody>
+</table>
+{% endblock %}
