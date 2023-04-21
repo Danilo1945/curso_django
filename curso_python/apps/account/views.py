@@ -1,9 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.core import serializers
 from django.http import JsonResponse
 from .models import Move, MoveLine
+from .forms import MoveForm, MoveLineForm
 import json
 
 
@@ -21,6 +22,52 @@ def move_list(request):
 
     data_render = render(request, 'move/account_list.html', context)
     return data_render
+
+
+def move_form(request):
+    if request.method == 'POST':
+        form = MoveForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # alerta = "Información Creada Correctamente"
+            # context = {'mensaje': alerta}
+
+            return redirect('move_list')  # redirige a la vista correspondiente
+    else:
+        form = MoveForm()
+    return render(request, 'move/move_form.html', {'form': form})
+
+
+def move_edit(request, move_id):
+    # move = Move.objects.get(pk=move_id)
+    # data = serializers.serialize('json', [move])
+    # return JsonResponse(data, safe=False)
+    # print('')
+
+    move = Move.objects.get(pk=move_id)
+    if request.method == 'GET':
+        form = MoveForm(instance=move)
+    else:
+        form = MoveForm(request.POST, instance=move)
+        if form.is_valid():
+            form.save()
+            return redirect('move_list')  # redirige a la vista correspondiente
+
+    context = {"title": "Nueva Factura", "form": form}
+    return render(request, 'move/move_edit.html', context)
+
+
+def move_delete(request, move_id):
+    move = Move.objects.get(pk=move_id)
+    if request.method == 'POST':
+        move.delete()
+        return redirect('move_list')  # redirige a la vista correspondiente
+    else:
+        context = {'title': "Eliminar Factura", "move": move}
+    return render(request, 'move/move_delete.html', context)
+
+
+# account_move_line
 
 
 def move_line_list(request):

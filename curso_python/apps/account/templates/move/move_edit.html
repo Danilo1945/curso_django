@@ -1,0 +1,23 @@
+{% extends "bases/base.html" %}
+
+{% block titulo_pagina %}
+{{title}}
+{% endblock %}
+
+{% block contenido %}
+
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="row">
+        <div class="col-1">
+            <a class="btn btn-danger" href="{% url 'move_list'  %}">Cancelar</a>
+        </div>
+        <div class="col-1">
+            <button class="btn btn-primary" type="submit">Guardar</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
