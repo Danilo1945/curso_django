@@ -40,8 +40,8 @@
     </tr>
     </thead>
     <tbody>
-    {% if moves_ids %}
-    {% for move in moves_ids %}
+    {% if move_list %}
+    {% for move in move_list %}
     <tr>
         <td>
             {{move.id}}
@@ -63,6 +63,7 @@
         </td>
         <td>
             <a class="btn btn-success" href="{% url 'move_edit' move.id   %}">Editar</a>
+            <a class="btn btn-success" href="{% url 'move_master_detail_list' move.id   %}">Editar MD</a>
             <a class="btn btn-danger" href="{% url 'move_delete' move.id   %}">Eliminar</a>
 
         </td>

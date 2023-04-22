@@ -25,9 +25,10 @@ class MoveLineForm(forms.ModelForm):
         }
 
 
-class MoveForm(forms.ModelForm):
-    lineas_factura = forms.inlineformset_factory(Move, MoveLine, form=MoveLineForm, extra=5)
+MoveLineFormSet = forms.inlineformset_factory(Move, MoveLine, form=MoveLineForm, extra=1, can_delete=True)
 
+
+class MoveForm(forms.ModelForm):
     class Meta:
         model = Move
         fields = ['name', 'cliente', 'date', 'numero_documento', 'total']

@@ -1,0 +1,108 @@
+{% extends "bases/base.html" %}
+
+{% block titulo_pagina %}
+{{title}}
+{% endblock %}
+{% block contenido %}
+
+<form method="POST">
+    {% csrf_token %}
+    {% csrf_token %}
+    {{ form.as_table }}
+
+    <h1>Lineas</h1><br/>
+   {{ detalles.management_form }}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Detalle</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody id="new_content">
+        {% for formset_form in form.extra_forms %}
+        <tr>
+            <td>{{ formset_form.product }}</td>
+            <td>{{ formset_form.detail }}</td>
+            <td>{{ formset_form.qty }}</td>
+            <td>{{ formset_form.price }}</td>
+            <td>{{ formset_form.subtotal }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-10">
+            <button class="btn btn-primary" onclick="addInput();return false;">NuevaLinea</button>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Guardar</button>
+            <a class="btn btn-danger" href="{% url 'move_list'  %}">Cancelar</a>
+
+        </div>
+    </div>
+</form>
+<script>
+       function addInput() {
+            var forms = document.querySelector('#id_moveline_set-TOTAL_FORMS')
+            var lit_elements =[];
+
+            var newproduct = document.querySelector('#id_moveline_set-0-product').cloneNode( true );
+            newproduct.name = 'moveline_set-'+forms.value+'-product';
+            newproduct.id = 'id_moveline_set-'+forms.value+'-product';
+
+            lit_elements.push(newproduct);
+
+
+            var newdetail = document.querySelector('#id_moveline_set-0-detail').cloneNode( true );
+            newdetail.name = 'moveline_set-'+forms.value+'-detail';
+            newdetail.id = 'id_moveline_set-'+forms.value+'-detail';
+            lit_elements.push(newdetail);
+
+             var newqty = document.querySelector('#id_moveline_set-0-qty').cloneNode( true );
+            newqty.name = 'moveline_set-'+forms.value+'-qty';
+            newqty.id = 'id_moveline_set-'+forms.value+'-qty';
+            lit_elements.push(newqty);
+            var newprice = document.querySelector('#id_moveline_set-0-price').cloneNode( true );
+            newprice.name = 'moveline_set-'+forms.value+'-price';
+            newprice.id = 'id_moveline_set-'+forms.value+'-price';
+            lit_elements.push(newprice);
+
+            var newsubtotal = document.querySelector('#id_moveline_set-0-subtotal').cloneNode( true );
+            newsubtotal.name = 'moveline_set-'+forms.value+'-subtotal';
+            newsubtotal.id = 'id_moveline_set-'+forms.value+'-subtotal';
+            lit_elements.push(newsubtotal);
+
+            const tr = document.createElement('tr');
+           for (var i = 0; i<lit_elements.length; i++){
+               const td = document.createElement('td');
+               td.appendChild(lit_elements[i]);
+               tr.appendChild(td)
+               document.querySelector('#new_content').appendChild(tr);
+           }
+            forms.value = parseInt(forms.value) + 1;
+        }
+        function deleteInput() {
+            var forms = document.querySelector('#id_form-TOTAL_FORMS');
+            forms.value = parseInt(forms.value) - 1;
+            //
+            removeInput = '#id_form-'+forms.value+'-full_name';
+            removeSelect = '#id_form-'+forms.value+'-gender';
+            document.querySelector(removeInput).remove();
+            document.querySelector(removeSelect).remove();
+        }
+
+
+
+
+
+
+
+</script>
+{% endblock %}
